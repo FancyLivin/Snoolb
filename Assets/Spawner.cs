@@ -20,6 +20,8 @@ public class Spawner : MonoBehaviour
         {
             var rotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
             var spawnedBloon = Instantiate(bloonPrefab, transform.position, rotation);
+            spawnedBloon.GetComponent<BloonController>().destroyHandler = DestroyBloon;
+
             activeBloons.Add(spawnedBloon);
         }
     }
@@ -33,15 +35,27 @@ public class Spawner : MonoBehaviour
         activeBloons.Clear();
     }
 
+    private void DestroyBloon(GameObject bloon)
+    {
+        Destroy(bloon);
+    }
+
     private void Update()
     {
         for (int i = activeBloons.Count - 1; i >= 0; --i)
         {
             var bloon = activeBloons[i];
-            if (bloon.transform.position.y > 5)
+            if (bloon.activeSelf)
             {
-                Destroy(bloon);
-                activeBloons.Remove(bloon);
+                if (bloon.transform.position.y > 5)
+                {
+                    Destroy(bloon);
+                    activeBloons.RemoveAt(i);
+                }
+            }
+            else
+            {
+                activeBloons.RemoveAt(i);
             }
         }
     }

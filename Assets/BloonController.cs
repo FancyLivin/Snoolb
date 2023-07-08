@@ -6,15 +6,20 @@ public class BloonController : MonoBehaviour
 {
     public float speed = 1.0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    public delegate void DestroyBloon(GameObject bloon);
+    public DestroyBloon destroyHandler;
 
     // Update is called once per frame
     void Update()
     {
         transform.position += Vector3.up * Time.deltaTime * speed;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Border")
+        {
+            destroyHandler(gameObject);
+        }
     }
 }
