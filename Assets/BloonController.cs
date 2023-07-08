@@ -20,19 +20,16 @@ public class BloonController : MonoBehaviour
         transform.position += direction * Time.fixedDeltaTime * speed;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "directionnode")
-        {
-            direction = other.GetComponent<DirectionNode>().getDirection();
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Border")
         {
             destroyHandler(gameObject);
+        }
+
+        if (other.tag == "directionnode")
+        {
+            direction = other.GetComponent<DirectionNode>().getDirection();
         }
     }
 }
