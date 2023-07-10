@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,8 +24,10 @@ public class Spawner : MonoBehaviour
             var rotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
             var spawnedBloon = Instantiate(bloonPrefab, transform.position, rotation);
 
-            spawnedBloon.GetComponent<BloonController>().destroyHandler = DestroyBloon;
-            spawnedBloon.GetComponent<BloonController>().setTargetPos(firstPathNode);
+            BloonController bc = spawnedBloon.GetComponent<BloonController>();
+
+            bc.setTargetPos(firstPathNode);
+            bc.OnDeath += OnBloonDeath;
 
             activeBloons.Add(spawnedBloon);
         }
@@ -39,9 +42,10 @@ public class Spawner : MonoBehaviour
         activeBloons.Clear();
     }
 
-    private void DestroyBloon(GameObject bloon)
-    {
-        Destroy(bloon);
+    private void OnBloonDeath(object sender, EventArgs e) {
+        BloonController bc = (BloonController) sender;
+        bool success = activeBloons.Remove(bc.gameObject);
+        if (!success) Debug.Log("failed to remove bloon from list");
     }
 
     private void Update()
