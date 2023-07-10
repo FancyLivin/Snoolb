@@ -10,9 +10,12 @@ public class BloonController : MonoBehaviour
     public delegate void DestroyBloon(GameObject bloon);
     public DestroyBloon destroyHandler;
 
+    private GameObject targetPathNode;
+
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(GetDistToEnd());
     }
 
     void FixedUpdate()
@@ -27,9 +30,27 @@ public class BloonController : MonoBehaviour
             destroyHandler(gameObject);
         }
 
-        if (other.tag == "directionnode")
+        if (other.tag == "pathnode")
         {
-            direction = other.GetComponent<DirectionNode>().getDirection();
+            if (other.gameObject.GetComponent<PathNode>().final)
+            {
+                destroyHandler(gameObject);
+            } else
+            {
+                setTargetPos(other.gameObject.GetComponent<PathNode>().nextPathNode);
+            }
         }
+    }
+
+    public void setTargetPos(GameObject target)
+    {
+        targetPathNode = target;
+        direction = ((Vector2)targetPathNode.transform.position - (Vector2)transform.position).normalized;
+        Debug.Log(direction);
+    }
+
+    public float GetDistToEnd()
+    {
+        return ((Vector2)targetPathNode.transform.position - (Vector2)transform.position).magnitude + targetPathNode.GetComponent<PathNode>().GetDistToEnd();
     }
 }

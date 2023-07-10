@@ -9,6 +9,8 @@ public class Spawner : MonoBehaviour
 
     private List<GameObject> activeBloons;
 
+    [SerializeField] private GameObject firstPathNode;
+
     private void Start()
     {
         activeBloons = new List<GameObject>();
@@ -20,7 +22,9 @@ public class Spawner : MonoBehaviour
         {
             var rotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
             var spawnedBloon = Instantiate(bloonPrefab, transform.position, rotation);
+
             spawnedBloon.GetComponent<BloonController>().destroyHandler = DestroyBloon;
+            spawnedBloon.GetComponent<BloonController>().setTargetPos(firstPathNode);
 
             activeBloons.Add(spawnedBloon);
         }
