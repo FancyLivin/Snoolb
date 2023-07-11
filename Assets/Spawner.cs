@@ -45,7 +45,7 @@ public class Spawner : MonoBehaviour
     private void OnBloonDeath(object sender, EventArgs e) {
         BloonController bc = (BloonController) sender;
         bool success = activeBloons.Remove(bc.gameObject);
-        if (!success) Debug.Log("failed to remove bloon from list");
+        if (!success) Debug.Log("Spawner: failed to remove bloon from list");
     }
 
     private void Update()

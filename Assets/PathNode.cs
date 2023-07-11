@@ -30,4 +30,13 @@ public class PathNode : MonoBehaviour
     {
         return distToEnd;
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        if (!final) {
+            Gizmos.DrawLine(transform.position, transform.position + (Vector3) ((Vector2)nextPathNode.transform.position - (Vector2)transform.position).normalized * 0.5f);
+        }
+        Gizmos.DrawCube(transform.position, new Vector3(0.1f, 0.1f, 1));
+    }
 }

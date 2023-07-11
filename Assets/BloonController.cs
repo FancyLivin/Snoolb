@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 public class BloonController : MonoBehaviour
 {
+    // numSpawned and id for debug purposes.
+    public static int numSpawned = 0;
+    public int id = 0;
     public float speed = 1.0f;
     public Vector3 direction;
 
@@ -16,6 +19,8 @@ public class BloonController : MonoBehaviour
     void Start()
     {
         OnDeath += OnBloonDeath;
+        id = numSpawned;
+        numSpawned += 1;
     }
 
     // Update is called once per frame
@@ -56,7 +61,6 @@ public class BloonController : MonoBehaviour
     {
         targetPathNode = target;
         direction = ((Vector2)targetPathNode.transform.position - (Vector2)transform.position).normalized;
-        Debug.Log(direction);
     }
 
     public float GetDistToEnd()
