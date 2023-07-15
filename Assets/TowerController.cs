@@ -10,6 +10,8 @@ public class TowerController : MonoBehaviour
     [SerializeField] float attackSpeed = 1f;
     private float nextAttackTime = 0f;
 
+    public GameObject bulletType;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,8 @@ public class TowerController : MonoBehaviour
         if (Time.time > nextAttackTime) {
             GameObject targettedBloon = targetBloon();
             if (targettedBloon) {
+                GameObject bullet = Instantiate(bulletType, transform.position, Quaternion.Euler(0.0f, 0.0f, 90.0f));
+                bullet.GetComponent<BasicBulletController>().SetTarget(targettedBloon);
                 Debug.Log("Attack!" + targettedBloon.GetComponent<BloonController>().id);
                 nextAttackTime = Time.time + (1f / attackSpeed);
                 Debug.Log(Time.time + " " + nextAttackTime);
